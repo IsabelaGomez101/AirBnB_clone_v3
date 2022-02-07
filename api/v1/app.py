@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """Import package"""
-from flask import Flask, jsonify
+from flask import Flask, jsonify, make_response
 from models import storage
 from api.v1.views import app_views
 from os import getenv
@@ -21,7 +21,7 @@ def teardown(exception):
 @app.errorhandler(404)
 def error_404(e):
     """Handler for 404 errors, returns a JSON-formatted 404"""
-    return jsonify({"error": "Not found"})
+    return make_response(jsonify({"error": "Not found"}), 404)
 
 if __name__ == "__main__":
     """Main function"""
