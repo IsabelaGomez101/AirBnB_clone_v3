@@ -40,8 +40,8 @@ class FileStorage:
         If no class is passed, returns the count of all objects in storage."""
         count = 0
         if cls is None:
-            for i in classes.values():
-                count += len(models.storage.all(i).values())
+            for value in classes.values():
+                count += len(models.storage.all(value).values())
         else:
             count += len(models.storage.all(cls).values())
         return count
