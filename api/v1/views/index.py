@@ -3,7 +3,6 @@
 from api.v1.views import app_views
 from flask import jsonify
 from models import storage
-from models.amenity import Amenity
 
 
 @app_views.route('/status')
@@ -12,13 +11,12 @@ def status():
     return jsonify({"status": "OK"})
 
 
-@app_views.route('/api/v1/stats')
+@app_views.route('/stats')
 def stats():
     """retrieves the number of each objects by type"""
     n_objs = {}
-    classes = {"Amenity": "amenities", "City": "cities",
-               "Place": "places", "Review": "reviews", "State": "states",
-               "User": "users"}
-    for key, value in classes.items():
-        n_objs[value] = storage.count(key)
+    classes = ["Amenity", "City", "Place", "Review", "State", "User"]
+    keys = ["amenities", "cities", "places", "reviews", "states", "users"]
+    for i in range(len(classes)):
+        n_objs[keys[i]] = storage.count(classes[i])
     return jsonify(n_objs)
