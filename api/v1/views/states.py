@@ -12,15 +12,15 @@ from models.state import State
 def get_states():
     """Retrieves the list of all State objects"""
     list = []
-    for i in storage.all("State").values():
+    for i in storage.all(State).values():
         list.append(i.to_dict())
-    return list
+    return jsonify(list)
 
 
 @app_views.route('/states/<state_id>', methods=['GET'])
 def get_states_by_id(state_id):
     """Retrieves a State object by id"""
-    state = storage.get("State", state_id)
+    state = storage.get(State, state_id)
     if state is None:
         abort(404)
     else:
@@ -30,7 +30,7 @@ def get_states_by_id(state_id):
 @app_views.route('/states/<state_id>', methods=['DELETE'])
 def delete_state(state_id):
     """Deletes a State object by id"""
-    obj = storage.get("State", state_id)
+    obj = storage.get(State, state_id)
     if obj is None:
         abort(404)
     else:
@@ -55,7 +55,7 @@ def create_state():
 @app_views.route('/states/<state_id>', methods=['PUT'])
 def update_state(state_id):
     """Updates a State object by id"""
-    obj = storage.get("State", state_id)
+    obj = storage.get(State, state_id)
     if obj is None:
         abort(404)
     else:
