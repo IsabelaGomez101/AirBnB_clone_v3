@@ -8,7 +8,7 @@ from models import storage
 from models.state import State
 
 
-@app_views.route('/states', methods=['GET'])
+@app_views.route('/states', methods=['GET'], strict_slashes=False)
 def get_states():
     """Retrieves the list of all State objects"""
     list = []
@@ -17,7 +17,7 @@ def get_states():
     return jsonify(list)
 
 
-@app_views.route('/states/<state_id>', methods=['GET'])
+@app_views.route('/states/<state_id>', methods=['GET'], strict_slashes=False)
 def get_states_by_id(state_id):
     """Retrieves a State object by id"""
     state = storage.get(State, state_id)
@@ -27,7 +27,7 @@ def get_states_by_id(state_id):
         return jsonify(state.to_dict())
 
 
-@app_views.route('/states/<state_id>', methods=['DELETE'])
+@app_views.route('/states/<state_id>', methods=['DELETE'], strict_slashes=False)
 def delete_state(state_id):
     """Deletes a State object by id"""
     obj = storage.get(State, state_id)
@@ -39,21 +39,23 @@ def delete_state(state_id):
         return make_response(jsonify({}), 200)
 
 
-@app_views.route('/states', methods=['POST'])
+@app_views.route('/states', methods=['POST'], strict_slashes=False)
 def create_state():
     """Create a new state"""
     data = request.get_json
     if data is None:
         abort(400, description="Not a JSON")
-    if "name" not in data.keys():
+    elif "name" not in data.keys():
         abort(400, description="Missing name")
-    new_state = State(**data)
-    storage.save()
-    obj = storage.get(State, new_state.id)
-    return make_response(jsonify(obj.to_dict()), 201)
+    else:
+        new_state = State(**data)
+        storage.new(new_state)
+        storage.save()
+        obj = storage.get(State, new_state.id)
+        return make_response(jsonify(obj.to_dict()), 201)
 
 
-@app_views.route('/states/<state_id>', methods=['PUT'])
+@app_views.route('/states/<state_id>', methods=['PUT'], strict_slashes=False)
 def update_state(state_id):
     """Updates a State object by id"""
     obj = storage.get(State, state_id)
