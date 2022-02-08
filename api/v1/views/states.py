@@ -44,12 +44,13 @@ def create_state():
     """Create a new state"""
     data = request.get_json(silent=True)
     if data is None:
-        return "Not a JSON", 400
-    if name not in data:
-        return "Missing name", 400
+        abort(400, description="Not a JSON")
+    if "name" not in data:
+        abort(400, description="Missing name")
     new_state = State(**data)
     storage.save()
-    return make_response(jsonify(new_state.to_dict()), 201)
+    obj = storage.get(State, new_state.id)
+    return make_response(jsonify(obj.to_dict()), 201)
 
 
 @app_views.route('/states/<state_id>', methods=['PUT'])
@@ -61,7 +62,7 @@ def update_state(state_id):
     else:
         data = request.get_json(silent=True)
         if data is None:
-            return "Not a JSON", 400
+            abort(400, description="Not a JSON")
         list_arg = ["id", "created_at", "updated_at"]
         for key, value in data.items():
             if key not in list_arg:
