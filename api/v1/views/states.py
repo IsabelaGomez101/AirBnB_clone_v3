@@ -1,7 +1,5 @@
 #!/usr/bin/python3
 """Import package"""
-from unicodedata import name
-from itsdangerous import json
 from api.v1.views import app_views
 from flask import jsonify, abort, make_response, request
 from models import storage
