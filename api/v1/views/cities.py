@@ -60,7 +60,7 @@ def create_city(state_id):
         new_city.state_id = state.id
         storage.new(new_city)
         storage.save()
-        obj = storage.get(State, new_city.id)
+        obj = storage.get(City, new_city.id)
         return make_response(jsonify(obj.to_dict()), 201)
 
 
