@@ -27,7 +27,8 @@ def get_states_by_id(state_id):
         return jsonify(state.to_dict())
 
 
-@app_views.route('/states/<state_id>', methods=['DELETE'], strict_slashes=False)
+@app_views.route('/states/<state_id>', methods=['DELETE'],
+                 strict_slashes=False)
 def delete_state(state_id):
     """Deletes a State object by id"""
     obj = storage.get(State, state_id)
@@ -42,7 +43,7 @@ def delete_state(state_id):
 @app_views.route('/states', methods=['POST'], strict_slashes=False)
 def create_state():
     """Create a new state"""
-    data = request.get_json
+    data = request.get_json()
     if data is None:
         abort(400, description="Not a JSON")
     elif "name" not in data.keys():
