@@ -57,7 +57,7 @@ def create_place(city_id):
         abort(400, description="Not a JSON")
     if "user_id" not in data.keys():
         abort(400, description="Missing user_id")
-    user = storage.get(User, data["user_id"])
+    user = storage.get(User, data['user_id'])
     if user is None:
         abort(404)
     if "name" not in data.keys():
@@ -77,7 +77,7 @@ def update_place(place_id):
     if obj is None:
         abort(404)
     else:
-        data = request.get_json(silent=True)
+        data = request.get_json()
         if data is None:
             abort(400, description="Not a JSON")
         list_arg = ["id", "user_id", "city_id", "created_at", "updated_at"]
