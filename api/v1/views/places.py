@@ -10,7 +10,7 @@ from models.city import City
 
 @app_views.route('/cities/<city_id>/places', methods=['GET'],
                  strict_slashes=False)
-def get_cities(city_id):
+def get_places(city_id):
     """Retrieves the list of all Cities objects of a Place"""
     list = []
     city = storage.get(City, city_id)
@@ -55,15 +55,16 @@ def create_place(city_id):
     data = request.get_json()
     if data is None:
         abort(400, description="Not a JSON")
-    if "user_id" not in data.keys():
+    elif "user_id" not in data.keys():
         abort(400, description="Missing user_id")
     user = storage.get(User, data['user_id'])
     if user is None:
         abort(404)
-    if "name" not in data.keys():
+    elif "name" not in data.keys():
         abort(400, description="Missing name")
-    data["city_id"] = city_id
+    # data["city_id"] = city_id
     new_place = Place(**data)
+    new_place.city_id = city.id
     storage.new(new_place)
     storage.save()
     obj = storage.get(Place, new_place.id)
