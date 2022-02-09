@@ -3,7 +3,6 @@
 from api.v1.views import app_views
 from flask import jsonify, abort, make_response, request
 from models import storage
-from models.review import Review
 from models.place import Place
 from models.user import User
 from models.city import City
@@ -18,7 +17,7 @@ def get_cities(city_id):
     if city is None:
         abort(404)
     for i in storage.all(Place).values():
-        if city.place_id == city_id:
+        if i.city_id == city_id:
             list.append(i.to_dict())
     return jsonify(list)
 
