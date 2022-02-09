@@ -55,15 +55,15 @@ def create_review(place_id):
     data = request.get_json()
     if data is None:
         abort(400, description="Not a JSON")
-    if "user_id" not in data.keys():
+    elif "user_id" not in data.keys():
         abort(400, description="Missing user_id")
     user = storage.get(User, data["user_id"])
     if user is None:
         abort(404)
-    if "text" not in data.keys():
+    elif "text" not in data.keys():
         abort(400, description="Missing text")
-    data["place_id"] = place_id
     new_review = Review(**data)
+    new_review.place_id = place.id
     storage.new(new_review)
     storage.save()
     obj = storage.get(Review, new_review.id)
